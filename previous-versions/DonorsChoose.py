@@ -291,9 +291,15 @@ for category in categories:
     project_subject_categories_df['Total Instances'][category] = num
 
 fig2, ax2 = plt.subplots()
-ax2 = project_subject_categories_df.plot(kind='bar', legend=False)
-ax2.set_ylabel("Total Instances")
-ax2.set_title('Intances of Each Category in Project Subjects')
+ax2 = project_subject_categories_df.sort_values('Total Instances',
+                                                ascending=False).\
+                                    plot(kind='bar',
+                                         legend=False,
+                                         grid=True,
+                                         position=-0.8)
+ax2.set_ylabel("Total Instances", fontsize=16)
+ax2.set_title('Intances of Each Category in Project Subjects', fontsize=16)
+plt.xticks(fontsize=14, rotation=45)
 plt.show()
 
 # States

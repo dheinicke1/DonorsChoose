@@ -18,3 +18,5 @@ Competition submissions are a list of probabilities of the application being app
 The winner achieved a score of 0.828, my model achieved a score of 0.779.
 
 ## Methodology
+
+### EDA

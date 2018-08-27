@@ -20,3 +20,4 @@ The winner achieved a score of 0.828, my model achieved a score of 0.779.
 ## Methodology
 
 ### EDA
+![categories](https://github.com/dheinicke1/DonorsChoose/blob/master/files/Category_Instances.png)

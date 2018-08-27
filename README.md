@@ -35,4 +35,4 @@ How are the applications distributed geographically? Do some states have a dispr
 
 For this, I had to bring in external census data.
 
-![pop_vs_applcations]()
+![pop_vs_applcations](https://github.com/dheinicke1/DonorsChoose/blob/master/files/population_vs_applications.png)

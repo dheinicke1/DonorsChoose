@@ -20,4 +20,19 @@ The winner achieved a score of 0.828, my model achieved a score of 0.779.
 ## Methodology
 
 ### EDA
+
+Before jumping into what makes for a good application, it is worth getting an idea of what the applications look like, what the teachers are requesting, where the applications are coming from and so on. This will help guide the feature extraction later on.
+
+There are a number of features to explore graphically, but here are a few examples to start with.
+
+First, are the project categories well balanced, or are others more popular than others?
+
 ![categories](https://github.com/dheinicke1/DonorsChoose/blob/master/files/Category_Instances.png)
+
+How much are the teachers requesting, and how are the requests distributed?
+
+How are the applications distributed geographically? Do some states have a disproportionate number of applications relative to their population? Is there a relationship between state income and the grant application rate?
+
+For this, I had to bring in external census data.
+
+![pop_vs_applcations]()

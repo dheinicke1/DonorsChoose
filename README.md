@@ -23,7 +23,7 @@ The winner achieved a score of 0.828, my model achieved a score of 0.779.
 
 Before jumping into what makes for a good application, it is worth getting an idea of what the applications look like, what the teachers are requesting, where the applications are coming from and so on. This will help guide the feature extraction later on.
 
-There are a number of features to explore graphically, but here are a few examples to start with.
+There are a number of features to explore  including the grade being taught, the teacher's application history and details about the project, but here are a few examples to start with. 
 
 First, are the project categories well balanced, or are others more popular than others?
 

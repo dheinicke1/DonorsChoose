@@ -27,7 +27,11 @@ There are a number of features to explore graphically, but here are a few exampl
 
 First, are the project categories well balanced, or are others more popular than others?
 
-![categories](https://github.com/dheinicke1/DonorsChoose/blob/master/files/Category_Instances.png)
+<p align="center">
+  <img width="460" height="300" src="https://github.com/dheinicke1/DonorsChoose/blob/master/files/Category_Instances.png">
+</p>
+
+![categories]()
 
 How much are the teachers requesting, and how are the requests distributed?
 

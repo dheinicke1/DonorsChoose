@@ -28,10 +28,8 @@ There are a number of features to explore graphically, but here are a few exampl
 First, are the project categories well balanced, or are others more popular than others?
 
 <p align="center">
-  <img width="460" height="300" src="https://github.com/dheinicke1/DonorsChoose/blob/master/files/Category_Instances.png">
+  <img width="514" height="439" src="https://github.com/dheinicke1/DonorsChoose/blob/master/files/Category_Instances.png">
 </p>
-
-![categories]()
 
 How much are the teachers requesting, and how are the requests distributed?
 
@@ -39,7 +37,9 @@ How are the applications distributed geographically? Do some states have a dispr
 
 For this, I had to bring in external census data.
 
-![pop_vs_applcations](https://github.com/dheinicke1/DonorsChoose/blob/master/files/population_vs_applications.png)
+<p align="center">
+  <img width="513" height="365" src="https://github.com/dheinicke1/DonorsChoose/blob/master/files/population_vs_applications.png">
+</p>
 
 There are some outliers - South Carolina has a disproportionately high number of applications, while the number of applications in Texas is disproportionately low. Its not clear why, but maybe modeling will reveal differences by state.
 

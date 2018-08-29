@@ -1,6 +1,5 @@
 # Inital EDA and modeling
 
-import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -27,8 +26,9 @@ from textblob import TextBlob
 # Light GBM
 import lightgbm as lgb
 
-# Data Folder
-os.chdir('...\\TrainDataFolder')
+plt.style.use('seaborn')
+
+DATA_DIR = 'C:/Users/Dave/Google Drive/Data Science Training/Python Scripts/Donors Choose/'
 
 # Definitions
 
@@ -193,8 +193,8 @@ dtypes_preprocessed = {
     'text_subj': 'float64'
     }
 
-df_train = pd.read_csv('train.csv', dtype=dtypes)
-df_test = pd.read_csv('test.csv')
+df_train = pd.read_csv(DATA_DIR + 'train.csv', dtype=dtypes)
+df_test = pd.read_csv(DATA_DIR + 'test.csv')
 df_all = pd.concat([df_train, df_test], axis=0)
 
 dtypes_resources = {
@@ -204,7 +204,8 @@ dtypes_resources = {
     'price': 'float64'
     }
 
-resouces = pd.read_csv('resources.csv', usecols=['id', 'quantity', 'price'],
+resouces = pd.read_csv(DATA_DIR + 'resources.csv',
+                       usecols=['id', 'quantity', 'price'],
                        dtype=dtypes_resources)
 
 resouces = pd.DataFrame(resouces.groupby('id').agg(
@@ -248,18 +249,16 @@ df_train.head()
 df_train.info()
 
 # project_grade_category
-fig1, ax1 = plt.subplots()
+fig, ax = plt.subplots()
 
 project_grade_categories = df_train.project_grade_category.value_counts()
 
 project_grade_categories.index
 project_grade_categories.values
-ax1.bar(project_grade_categories.index,
-        project_grade_categories.values,
-        # color = 'blue'
-        )
-ax1.set_ylabel('Number of Submissions')
-ax1.set_title('Distribution of Grades')
+ax.bar(project_grade_categories.index,
+       project_grade_categories.values)
+ax.set_ylabel('Number of Submissions')
+ax.set_title('Distribution of Grades')
 plt.show()
 
 
@@ -290,16 +289,17 @@ for category in categories:
     num = sum(df_train.project_subject_categories.str.contains(category))
     project_subject_categories_df['Total Instances'][category] = num
 
-fig2, ax2 = plt.subplots()
-ax2 = project_subject_categories_df.sort_values('Total Instances',
-                                                ascending=False).\
+fig, ax = plt.subplots()
+ax = project_subject_categories_df.sort_values('Total Instances',
+                                               ascending=False).\
                                     plot(kind='bar',
                                          legend=False,
-                                         grid=True,
-                                         position=-0.8)
-ax2.set_ylabel("Total Instances", fontsize=16)
-ax2.set_title('Intances of Each Category in Project Subjects', fontsize=16)
-plt.xticks(fontsize=14, rotation=45)
+                                         position=-1)
+ax.set_ylabel("Total Instances", fontsize=12)
+ax.set_title('Intances of Each Category in Project Subjects', fontsize=14)
+plt.xticks(fontsize=12, rotation=45)
+# plt.savefig('example.png', bbox_inches='tight')
+plt.close(fig)
 plt.show()
 
 # States

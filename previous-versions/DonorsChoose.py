@@ -14,9 +14,9 @@ from nltk.corpus import stopwords
 from string import punctuation
 
 from sklearn.preprocessing import LabelEncoder
-# from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics import roc_auc_score
-# from sklearn.model_selection import train_test_split, RepeatedKFold
+from sklearn.model_selection import train_test_split, RepeatedKFold
 # from sklearn.decomposition import TruncatedSVD, PCA
 # from sklearn.manifold import TSNE
 
@@ -302,13 +302,37 @@ plt.xticks(fontsize=12, rotation=45)
 plt.close(fig)
 plt.show()
 
+# Project price mean
+
+# Price percentile vs percentage accpeted
+n_bins = 100
+groups = df_train.project_is_approved.\
+                  groupby(pd.qcut(df_train.mean_price, n_bins)).agg('mean')
+
+fig, (ax1, ax2) = plt.subplots(1, 2)
+ax1.hist(df_train.price_mean, bins='auto')
+ax1.set_xlim(0, 800)
+ax1.set_xlabel('Price, $')
+ax1.set_ylabel('Number of Applications')
+ax1.set_title('Distribution of Project Costs')
+ax2.scatter(np.arange(0, n_bins), groups.values, alpha=0.7)
+ax2.axhline(df_train.project_is_approved.mean(), color='k', alpha=0.8)
+ax2.text(n_bins*0.25, 0.85, 'Mean Success Rate', color='k', style='italic')
+ax2.set_xlabel('Price Bin')
+ax2.set_ylabel('Succes Rate')
+ax2.set_title('Price Bin  vs Probability of Success')
+fig.suptitle('Project Costs', fontsize=14, y=1.05)
+plt.tight_layout()
+plt.savefig('files/ProjectCosts.png')
+plt.show()
+
 # States
 
 state_counts = pd.DataFrame(df_train.school_state.value_counts())
 print(state_counts)
 
 # Read in state data for context (avail;able from US census)
-state_data = pd.read_csv('state_census_data.csv')
+state_data = pd.read_csv(DATA_DIR + 'state_census_data.csv')
 state_data = pd.merge(state_data, state_counts,
                       left_on='state_code',
                       right_index=True)

@@ -23,7 +23,7 @@ The winner achieved a score of 0.828, my model achieved a score of 0.779.
 
 Before jumping into what makes for a good application, it is worth getting an idea of what the applications look like, what the teachers are requesting, where the applications are coming from and so on. This will help guide the feature extraction later on.
 
-There are a number of features to explore  including the grade being taught, the teacher's application history and details about the project, but here are a few examples to start with. 
+There are a number of features to explore  including the grade being taught, the teacher's application history and details about the project, but here are a few examples to start with.
 
 First, are the project categories well balanced, or are others more popular than others?
 
@@ -32,6 +32,12 @@ First, are the project categories well balanced, or are others more popular than
 </p>
 
 How much are the teachers requesting, and how are the requests distributed?
+
+<p align="center">
+  <img width="576" height="396" src="https://github.com/dheinicke1/DonorsChoose/blob/master/files/ProjectCosts.png">
+</p>
+
+The vast majority of projects are under $200, although there are some projects in the thousands of dollars (not shown). The second plot shows the success rate by cost-grouping, with the average project costs requested split into 100 equally-sized groups (using adaptive binning). Interestingly, both teachers who ask for the least amount and teachers who ask for the most achieved higher success rates.
 
 How are the applications distributed geographically? Do some states have a disproportionate number of applications relative to their population? Is there a relationship between state income and the grant application rate?
 

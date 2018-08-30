@@ -19,7 +19,7 @@ The winner achieved a score of 0.828, my model achieved a score of 0.779.
 
 ## Methodology
 
-### EDA
+**1) EDA**
 
 Before jumping into what makes for a good application, it is worth getting an idea of what the applications look like, what the teachers are requesting, where the applications are coming from and so on. This will help guide the feature extraction later on.
 
@@ -58,3 +58,27 @@ What about state income vs number of applications? Does state income predict app
 Here's my takeaway for bringing in external state data:
 
 *There is variation by state in participation in the program, but sates are big. There is a lot of variation in schools within states, so its unlikely that just taking a state summary will tell us much. There could be a relationship between income in a school district and participation and success in the program, but we would need to join a more granular dataset to bring this into a model.*
+
+**2) Feature Extraction**
+
+The next step after investigating the data is to extract or engineer features that can be fed into a machine learning model. The nice thing about machine learning is that initially you don't have to worry about whether a feature will be predictive, the model can "learn" to only pay attention to features that matter.
+
+The functions defined at the beginning extract the following:
+
+- Timestamp: Extract the year, month, day and time the application was submitted as features
+
+- Text Attributes: Extract the word length of each text feature (essays, titles etc.)
+
+- Text sentiment: Using [TextBlob](https://textblob.readthedocs.io/en/dev/quickstart.html) and [VADER](https://github.com/cjhutto/vaderSentiment) sentiment analyzers, extract the sentiment scores as numeric features
+
+- Extract count of unique characters (such as '$' or '@') in the application text
+
+- Extract numeric features from the resources requested numeric features aggregated by teacher ID (sum, min, max, mean and std)
+
+- Encode categorical features to numeric labels
+
+- Text Vectorization: There are a number of text vectorization strategies (tfidf, hashing vectorizer), but in this case a simple count vectorizer appeared to work the best.
+
+**3) Modeling**
+
+ The first step to building a model is to split the labeled data into training and test sets (or use cross validation to try various splits of training and test sets). 

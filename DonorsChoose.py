@@ -304,25 +304,25 @@ def wordPreProcess(text):
                      if len(x) >= 1])
 
 
-tfidf = CountVectorizer(stop_words=None,
-                        preprocessor=wordPreProcess,
-                        max_features=n_features,
-                        binary=True,
-                        ngram_range=(1, 2))
+count_vec = CountVectorizer(stop_words=None,
+                            preprocessor=wordPreProcess,
+                            max_features=n_features,
+                            binary=True,
+                            ngram_range=(1, 2))
 
 
-tfidf.fit(df_all.text)
+count_vec.fit(df_all.text)
 
-tfidf_train = np.array(tfidf.transform(df_train.text).
-                       toarray(), dtype=np.float16)
-tfidf_test = np.array(tfidf.transform(df_test.text).
-                      toarray(), dtype=np.float16)
+count_vec_train = np.array(count_vec.transform(df_train.text).
+                           toarray(), dtype=np.float16)
+count_vec_test = np.array(count_vec.transform(df_test.text).
+                          toarray(), dtype=np.float16)
 
 for i in range(n_features):
-    df_train['tfidf_' + str(i)] = tfidf_train[:, i]
-    df_test['tfidf_' + str(i)] = tfidf_test[:, i]
+    df_train['count_vec_' + str(i)] = count_vec_train[:, i]
+    df_test['count_vec_' + str(i)] = count_vec_test[:, i]
 
-del tfidf_train, tfidf_test
+del count_vec_train, count_vec_test
 gc.collect()
 
 # Set up training and test sets

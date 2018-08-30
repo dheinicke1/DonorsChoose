@@ -420,9 +420,10 @@ plt.show()
 fig3, ax3 = plt.subplots()
 ax3 = sns.regplot('income_2015', 'app_to_pop_ratio',
                   data=state_data, ci=0, fit_reg=False)
-ax3.set_xlabel('Median State Income, 2015')
-ax3.set_ylabel('Rate of Applications')
-ax3.set_title('Rate of Applications vs State Income')
+ax3.set_xlabel('Median State Income, 2015', fontsize=16)
+ax3.set_ylabel('Rate of Applications', fontsize=16)
+ax3.set_title('Rate of Applications vs State Income', fontsize=16)
+plt.savefig('files/income_vs_application.png', bbox_inches='tight')
 plt.show()
 
 income = pd.DataFrame(np.array(state_data.income_2015),

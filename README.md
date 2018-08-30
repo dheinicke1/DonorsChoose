@@ -51,7 +51,9 @@ There are some outliers - South Carolina has a disproportionately high number of
 
 What about state income vs number of applications? Does state income predict applications? Apparently no!
 
-![income_vs_application]()
+<p align="center">
+  <img width="506" height="366" src="https://github.com/dheinicke1/DonorsChoose/blob/master/files/income_vs_application.png">
+</p>
 
 Here's my takeaway for bringing in external state data:
 

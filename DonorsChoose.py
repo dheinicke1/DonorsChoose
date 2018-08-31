@@ -3,6 +3,7 @@ import pandas as pd
 # import nltk
 from tqdm import tqdm
 import gc
+import re
 
 # from nltk import sent_tokenize, word_tokenize
 # nltk.download('stopwords')
@@ -20,6 +21,9 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 # Light GBM
 import lightgbm as lgb
+
+# Folder containing data
+DATA_PATH = 'C:/Users/Dave/Google Drive/Data Science Training/Python Scripts/Donors Choose/'
 
 # Definitions
 
@@ -127,8 +131,8 @@ dtypes = {
 
 print('Read Data...')
 
-df_train = pd.read_csv('train.csv', dtype=dtypes)
-df_test = pd.read_csv('test.csv')
+df_train = pd.read_csv(DATA_PATH + 'train.csv', dtype=dtypes)
+df_test = pd.read_csv(DATA_PATH + 'test.csv')
 df_all = pd.concat([df_train, df_test], axis=0)
 
 dtypes_resources = {
@@ -138,7 +142,7 @@ dtypes_resources = {
     'price': 'float32'
     }
 
-resouces = pd.read_csv('resources.csv',
+resouces = pd.read_csv(DATA_PATH + 'resources.csv',
                        usecols=['id', 'quantity', 'price'],
                        dtype=dtypes_resources)
 
@@ -214,11 +218,6 @@ df_test = process_timestamp(df_test)
 df_train = extract_features(df_train)
 df_test = extract_features(df_test)
 
-# xtract featuretures from the text: count of Key Characters
-
-df_train = count_characters(df_train)
-df_test = count_characters(df_test)
-
 # Combine text fileds into single string
 
 df_train['text'] = df_train.apply(lambda row: ''.join([
@@ -239,7 +238,13 @@ df_test['text'] = df_test.apply(lambda row: ''.join([
     str(row['project_essay_4'])
     ]), axis=1)
 
+# Extract featuretures from the text: count of Key Characters
+
+df_train = count_characters(df_train)
+df_test = count_characters(df_test)
+
 # Extract text polarity and subjectivity using TextBlob
+print('Extracting text sentiment: TextBlob...')
 
 df_train['text_polarity_TB'] = df_train.text.apply(get_polarity)
 df_train['text_subj_TB'] = df_train.text.apply(get_subjectivity)
@@ -248,6 +253,7 @@ df_test['text_polarity'] = df_test.text.apply(get_polarity)
 df_test['text_subj'] = df_test.text.apply(get_subjectivity)
 
 # Extract  text polarity using Vader Sentiment analysis
+print('Extracting text sentiment: VADER...')
 
 df_train['text_polarity_Vader'] = df_train.text.apply(get_vader_polarity)
 df_test['text_polarity_Vader'] = df_test.text.apply(get_vader_polarity)
@@ -261,6 +267,7 @@ df_test[['tp_vader_compond', 'tp_vader_neg', 'tp_vader_neu', 'tp_vader_pos']]\
 df_train.head()
 
 # Clean up dataframe
+print('Cleaning Up...')
 
 df_train.drop([
     'project_title',
@@ -278,8 +285,6 @@ df_test.drop([
     'project_essay_3',
     'project_essay_4',
     'text_polarity_Vader'], axis=1, inplace=True)
-
-gc.collect()
 
 df_all = pd.concat([df_train, df_test], axis=0)
 

@@ -7,6 +7,12 @@
 The code for the various models are in the ["Previous Versions"]() folder, the code used for my final submission is
 ["DonorsChoose.py"]()
 
+**Instructions**
+
+Download train.csv, test.csv and resources.csv from [Kaggle](https://www.kaggle.com/c/donorschoose-application-screening/data)
+
+Update 'DATA_PATH' in DonorsChoose.py to the folder you saved the training data to.
+
 ## Objective
 
 [Donors Choose](https://www.donorschoose.org/about) is a nonprofit organization that pairs teachers throughout the United States who have classroom projects with donors wiling to fund those projects.
@@ -81,4 +87,16 @@ The functions defined at the beginning extract the following:
 
 **3) Modeling**
 
- The first step to building a model is to split the labeled data into training and test sets (or use cross validation to try various splits of training and test sets). 
+ The first step to building a model is to split the labeled data into training and test sets (or use cross validation to try various splits of training and test sets).
+
+ The second step is to select a machine learning model to fit to the data. The applications include a wide array of features, from text features, to categorical features to numeric features, so I have a hunch that a decision-tree based model could do a good job pick up on some of the quirkiness in the data. [LightGBM](https://github.com/Microsoft/LightGBM) is a relatively quick tree-based model that uses gradient boosting to improve predictions, and seems like a good model to start with.
+
+The third step is to tune model parameters using a grid search, which can be applied on a subset of the data to speed things up.
+
+Finally, we take the model that performed the best on the holdout set (achieved the highest AUC score in this case), fit it to the full labeled set, and take that model to predict on the unlabeled set.
+
+**4) What did we find?**
+
+Submitting predictions to Kaggle returns a competition score, but it's far more interesting to unpack the model results to see what it "learned." What predicts a successful application? What are the takeaways for the volunteers at Donors Choose?
+
+First, lets look at the features the model used:

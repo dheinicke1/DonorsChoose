@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
-# import nltk
 from tqdm import tqdm
 import gc
 import re
+from collections import defaultdict
 
 # from nltk import sent_tokenize, word_tokenize
 # nltk.download('stopwords')
@@ -331,6 +331,8 @@ del count_vec_train, count_vec_test
 gc.collect()
 
 # Set up training and test sets
+df_train = pd.read_csv('C:/Users/Dave/Google Drive/Data Science Training/Python Scripts/Donors Choose/train_preprocessed2.csv', encoding = "ISO-8859-1")
+df_test = pd.read_csv('C:/Users/Dave/Google Drive/Data Science Training/Python Scripts/Donors Choose/test_preprocessed2.csv', encoding = "ISO-8859-1")
 
 cols_to_drop = [
     'id',
@@ -351,12 +353,12 @@ cnt = 0
 p_buf = []
 n_splits = 5
 n_repeats = 1
+model_dict = defaultdict()
 kf = RepeatedKFold(
     n_splits=n_splits,
     n_repeats=n_repeats,
     random_state=0)
 auc_buf = []
-
 
 for train_index, valid_index in kf.split(X):
     print('Fold {}/{}'.format(cnt + 1, n_splits))
@@ -426,6 +428,9 @@ for train_index, valid_index in kf.split(X):
         p_buf += np.array(p, dtype=np.float16)
     auc_buf.append(auc)
 
+    # Save individual models for comparison later
+    model_dict[cnt] = model
+
     cnt += 1
     # if cnt > 0: # Comment this to run several folds
     #     break
@@ -444,3 +449,22 @@ subm = pd.DataFrame()
 subm['id'] = id_test
 subm['project_is_approved'] = preds
 subm.to_csv('submission_lightGBM_COLAB.csv', index=False)
+
+feature_importance_dict = defaultdict(list)
+
+for i, model in model_dict.items():
+    weight = model.feature_importance()
+    name = model.feature_name()
+    tuples = zip(name, weight)
+
+    for f, w in tuples:
+        feature_importance_dict[f].append(w)
+
+model_dict[0].feature_name()[0:5]
+
+import shap
+
+shap.initjs()
+
+explainer = shap.TreeExplainer(model_dict[0])
+shap_values = explainer.shap_values(X)

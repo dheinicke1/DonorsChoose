@@ -4,6 +4,7 @@ from tqdm import tqdm
 import gc
 import re
 from collections import defaultdict
+import matplotlib.pyplot as plt
 
 # from nltk import sent_tokenize, word_tokenize
 # nltk.download('stopwords')
@@ -11,7 +12,7 @@ from collections import defaultdict
 from nltk.stem import PorterStemmer
 
 from sklearn.preprocessing import LabelEncoder
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import RepeatedKFold
 
@@ -294,7 +295,7 @@ gc.collect()
 # Text Vecorizer #
 print('Vectorize Text...')
 
-n_features = 5000
+n_features = 1000
 
 # tfidf = TfidfVectorizer(
 #         max_features=n_features,
@@ -331,8 +332,11 @@ del count_vec_train, count_vec_test
 gc.collect()
 
 # Set up training and test sets
-df_train = pd.read_csv('C:/Users/Dave/Google Drive/Data Science Training/Python Scripts/Donors Choose/train_preprocessed2.csv', encoding = "ISO-8859-1")
-df_test = pd.read_csv('C:/Users/Dave/Google Drive/Data Science Training/Python Scripts/Donors Choose/test_preprocessed2.csv', encoding = "ISO-8859-1")
+# df_train = pd.read_csv('C:/Users/Dave/Google Drive/Data Science Training/Python Scripts/Donors Choose/train_preprocessed2.csv', encoding = "ISO-8859-1")
+# df_test = pd.read_csv('C:/Users/Dave/Google Drive/Data Science Training/Python Scripts/Donors Choose/test_preprocessed2.csv', encoding = "ISO-8859-1")
+
+df_train.to_csv('C:/Users/Dave/Google Drive/Data Science Training/Python Scripts/Donors Choose/train_preprocessed_vec.csv')
+df_test.to_csv('C:/Users/Dave/Google Drive/Data Science Training/Python Scripts/Donors Choose/test_preprocessed_vec.csv')
 
 cols_to_drop = [
     'id',
@@ -450,21 +454,21 @@ subm['id'] = id_test
 subm['project_is_approved'] = preds
 subm.to_csv('submission_lightGBM_COLAB.csv', index=False)
 
-feature_importance_dict = defaultdict(list)
-
-for i, model in model_dict.items():
-    weight = model.feature_importance()
-    name = model.feature_name()
-    tuples = zip(name, weight)
-
-    for f, w in tuples:
-        feature_importance_dict[f].append(w)
-
-model_dict[0].feature_name()[0:5]
-
+# SHAP model analysis
 import shap
 
 shap.initjs()
 
 explainer = shap.TreeExplainer(model_dict[0])
 shap_values = explainer.shap_values(X)
+
+fig = shap.summary_plot(shap_values, X)
+
+gc.collect()
+
+# Print word from count_vec id
+i = 0
+for word, _ in sorted(count_vec.vocabulary_.items()):
+    if i == 821:
+        print(word)
+    i += 1

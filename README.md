@@ -99,4 +99,29 @@ Finally, we take the model that performed the best on the holdout set (achieved 
 
 Submitting predictions to Kaggle returns a competition score, but it's far more interesting to unpack the model results to see what it "learned." What predicts a successful application? What are the takeaways for the volunteers at Donors Choose?
 
-First, lets look at the features the model used:
+A great way to analyze how a model is using different features is with [SHapley Additive exPlanations (SHAP)](https://github.com/slundberg/shap), Scott Lundberg's package with platting features used to interpret model results.
+
+The following summary plot shows the 20 most significant features used by the LightGBM model. Each point represents a feature from an application. The color of the point indicates the relative value numeric value of the feature (high or low), and the position on the x-axis represents whether the particular point had a positive or negative effect on the application success:
+
+<p align="center">
+  <img width="772" height="582" src="https://github.com/dheinicke1/DonorsChoose/blob/master/files/SHAP_value.png">
+</p>
+
+Taking a look at the results shows us that the most important features the model is using are the price and the variance in price for teachers that have submitted more than one application. What does this mean? Even though we found out earlier that the group of highest cost projects actually had a higher acceptance rate, this model penalizes higher costs. This could be a limitation of the LightGBM model (it achieved a higher AUC score splitting projects on project cost) and that quirkiness in the training data is lost, or just an acknowledgement that higher cost projects are on the whole less likely to be funded.
+
+The model also "likes" teachers who ask for similar amounts in each project they submit, which is likely related to the 4th feature - the number of projects a teacher has submitted previously. Not surprisingly, teachers who submit over and over again have a higher success rate, and appear to need less assistance from Donors Choose volunteers. Maybe folks who have submitted over and over have taken a "if it isn't broke, don't fix it" approach - keep projects at about the same scope to get funded.
+
+What about the text features that made it into the top 20? The model appears to not like applications with too may exclamation points! Noted.
+
+Also, high numbers of the word 'book' do well (count_vec # 133) - books may be a highly successful material for a project.
+
+Others are harder to interpret - # 963 and # 965 correspond to the phrases "will allow" and "will be". This could just be noise in the model.
+
+
+**5) Final Thoughts**
+
+The LightGBM model is simply a model of the application success, not a true description of what is happening when humans review a grant application. There will always be randomness in human behavior, so we'll never get a perfect model of application success, but we can get some insight into what is happening with these applications.
+
+Unpacking the LightGBM model sheds light on how tree-based models really work. It picks up on some intuitive features, some surprising features and some that appear to just be noise. If we fit a different model, such as XGBoost or a neural net, we would likely get a different set of feature weights and interpretations. This sheds light on why ensemble models are more robust - perhaps an XGBoost model wouldn't be so concerned with exclamation points (!). Maybe a neural net could find out why some expensive projects are still successful.
+
+There's plenty more to explore here, including additional features to extract (Tfidf ect.) and different models - dig into it yourself!
